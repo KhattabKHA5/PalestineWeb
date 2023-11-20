@@ -1,17 +1,24 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const postButton = document.getElementById('postButton');
     const postsContainer = document.getElementById('postsContainer');
-    const userNameElement = document.getElementById('userName');
-    let userName = prompt('مرحبًا! الرجاء إدخال اسمك:');
+    const savedUserName = localStorage.getItem('userName');
+    let userName;
 
-    if (userName) {
-        userNameElement.textContent = 'اسم الناشر: ' + userName;
+    if (savedUserName) {
+        userName = savedUserName;
+    } else {
+        userName = prompt('مرحبًا! الرجاء إدخال اسمك:');
+        localStorage.setItem('userName', userName);
     }
 
-    // استرجاع المنشورات من Local Storage
-    const savedPosts = JSON.parse(localStorage.getItem('posts')) || [];
-    savedPosts.forEach(post => createPost(post.content, post.userName, post.file));
+    fetchAndDisplayPosts();
 
+    function fetchAndDisplayPosts() {
+        // استرجاع المنشورات من Local Storage
+        const savedPosts = JSON.parse(localStorage.getItem('posts')) || [];
+        savedPosts.forEach(post => createPost(post.content, post.userName, post.file));
+    }
+
+    const postButton = document.getElementById('postButton');
     postButton.addEventListener('click', function () {
         const postType = prompt('اختر نوع المنشور: "نص" أو "فيديو/صورة"');
 
@@ -46,32 +53,30 @@ document.addEventListener('DOMContentLoaded', function () {
     function createPost(content, userName, file) {
         const postElement = document.createElement('div');
         postElement.classList.add('post');
-        postElement.innerHTML = content;
 
         if (file) {
             const mediaElement = document.createElement(file.type.startsWith('image') ? 'img' : 'video');
             mediaElement.src = URL.createObjectURL(file);
             mediaElement.controls = true;
             mediaElement.style.width = '100%';
-
-            // أضف تكبير الصورة أو الفيديو
-            mediaElement.addEventListener('click', function () {
-                mediaElement.classList.toggle('enlarged');
-            });
-
             postElement.appendChild(mediaElement);
         }
+
+        const postContentElement = document.createElement('div');
+        postContentElement.classList.add('post-content');
+        postContentElement.innerHTML = content;
 
         // أضف زر حذف
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-button');
-        deleteButton.textContent = 'X';
+        deleteButton.textContent = 'حذف';
 
         deleteButton.addEventListener('click', function () {
             postsContainer.removeChild(postElement);
             savePosts();
         });
 
+        postElement.appendChild(postContentElement);
         postElement.appendChild(deleteButton);
 
         postsContainer.appendChild(postElement);
@@ -82,8 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function savePosts() {
         const allPosts = Array.from(document.querySelectorAll('.post')).map(postElement => {
-            const content = postElement.innerHTML;
-            const userName = content.match(/اسم الناشر: (.+)<br>/)[1];
+            const content = postElement.querySelector('.post-content').innerHTML;
             const fileElement = postElement.querySelector('img, video');
             const file = fileElement ? fileElement.src : null;
 
