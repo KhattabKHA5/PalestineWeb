@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Your Legendary Website</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>PalestineWeb</title>
 </head>
 <body>
-    <div class="container">
-        <div class="main-content" id="postsContainer">
-            <!-- المنشورات ستظهر هنا -->
-        </div>
-        <div class="actions-container">
-            <button id="shareButton" class="round-button" onclick="toggleShareOptions()">شارك</button>
-            <div id="shareOptions">
-                <div class="round-button" onclick="shareText()">نص</div>
-                <div class="round-button" onclick="shareMedia()">صورة/فيديو</div>
-            </div>
-        </div>
+  <div id="main-container">
+    <div id="publish-container">
+      <button id="publish-btn">نشر</button>
+      <div id="publish-options">
+        <button id="text-option">نص</button>
+        <button id="media-option">فيديو/صورة</button>
+      </div>
+      <div id="text-input">
+        <textarea id="text-content" placeholder="اكتب نصك هنا"></textarea>
+        <button id="text-publish-btn">نشر</button>
+      </div>
+      <div id="media-input">
+        <input type="file" id="media-file" accept="image/*, video/*">
+        <textarea id="media-caption" placeholder="اكتب نصاً للفيديو/الصورة"></textarea>
+        <button id="media-publish-btn">نشر</button>
+      </div>
     </div>
+    <div id="posts-container">
+      <!-- المنشورات ستظهر هنا -->
+    </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
