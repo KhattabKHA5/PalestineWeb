@@ -54,3 +54,18 @@ function clearInputFields() {
 }
 
 // You can add more functionalities and improve the code as needed
+
+// Sample function to initialize posts
+function initializePosts() {
+    // Sample posts, you can replace this with fetching data from a server
+    posts = [
+        { username: 'User1', text: 'This is the first post.' },
+        { username: 'User2', text: 'Another post with an image.', file: { type: 'image/png' } },
+        { username: 'User3', text: 'A video post.', file: { type: 'video/mp4' } },
+    ];
+
+    displayPosts();
+}
+
+// Call initializePosts to load initial posts
+initializePosts();
