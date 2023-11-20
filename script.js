@@ -1,99 +1,95 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f8f8f8;
-}
+document.addEventListener('DOMContentLoaded', function () {
+    const postButton = document.getElementById('postButton');
+    const postsContainer = document.getElementById('postsContainer');
+    const userNameElement = document.getElementById('userName');
+    let userName = prompt('مرحبًا! الرجاء إدخال اسمك:');
 
-.container {
-    display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-}
+    if (userName) {
+        userNameElement.textContent = 'اسم الناشر: ' + userName;
+    }
 
-.sidebar {
-    width: 20%;
-    background-color: #3498db;
-    padding: 20px;
-    color: #fff;
-    text-align: center;
-}
+    // استرجاع المنشورات من Local Storage
+    const savedPosts = JSON.parse(localStorage.getItem('posts')) || [];
+    savedPosts.forEach(post => createPost(post.content, post.userName, post.file));
 
-.sidebar #userName {
-    margin-bottom: 20px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #fff;
-}
+    postButton.addEventListener('click', function () {
+        const postType = prompt('اختر نوع المنشور: "نص" أو "فيديو/صورة"');
 
-.sidebar button {
-    background-color: #2ecc71;
-    color: #fff;
-    padding: 12px;
-    border: none;
-    cursor: pointer;
-    width: 80%;
-    margin-top: 20px;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
+        if (postType) {
+            if (postType.toLowerCase() === 'نص') {
+                const textContent = prompt('أدخل النص:');
+                if (textContent) {
+                    createPost('اسم الناشر: ' + userName + '<br>' + textContent, userName);
+                }
+            } else if (postType.toLowerCase() === 'فيديو/صورة') {
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*, video/*';
 
-.sidebar button:hover {
-    background-color: #27ae60;
-}
+                fileInput.addEventListener('change', function () {
+                    const file = fileInput.files[0];
+                    if (file) {
+                        const textContent = prompt('أدخل نصاً للصورة أو الفيديو:');
+                        if (textContent) {
+                            createPost('اسم الناشر: ' + userName + '<br>' + textContent, userName, file);
+                        }
+                    }
+                });
 
-.main-content {
-    width: 80%;
-    padding: 20px;
-    display: flex;
-    flex-direction: column; /* عرض المنشورات بشكل عمودي */
-    align-items: center; /* محاذاة المنشورات في وسط الصفحة */
-}
+                fileInput.click();
+            } else {
+                alert('اختيار غير صالح');
+            }
+        }
+    });
 
-.post {
-    position: relative;
-    width: 80%; /* تحديد عرض المنشور */
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    padding: 15px;
-    box-sizing: border-box;
-    background-color: #fff;
-    border-radius: 8px;
-    transition: box-shadow 0.3s ease;
-}
+    function createPost(content, userName, file) {
+        const postElement = document.createElement('div');
+        postElement.classList.add('post');
+        postElement.innerHTML = content;
 
-.post:hover {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-}
+        if (file) {
+            const mediaElement = document.createElement(file.type.startsWith('image') ? 'img' : 'video');
+            mediaElement.src = URL.createObjectURL(file);
+            mediaElement.controls = true;
+            mediaElement.style.width = '100%';
 
-.post img, .post video {
-    max-width: 100%;
-    height: auto;
-    border-radius: 6px;
-    margin-top: 10px;
-    transition: transform 0.3s ease;
-}
+            // أضف تكبير الصورة أو الفيديو
+            mediaElement.addEventListener('click', function () {
+                mediaElement.classList.toggle('enlarged');
+            });
 
-.post img.enlarged, .post video.enlarged {
-    transform: scale(1.2);
-}
+            postElement.appendChild(mediaElement);
+        }
 
-.post .delete-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: #e74c3c;
-    color: #fff;
-    padding: 5px;
-    border: none;
-    cursor: pointer;
-    border-radius: 50%;
-    font-size: 12px;
-    display: none;
-}
+        // أضف زر حذف
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('delete-button');
+        deleteButton.textContent = 'X';
 
-.post:hover .delete-button {
-    display: block;
-}
+        deleteButton.addEventListener('click', function () {
+            postsContainer.removeChild(postElement);
+            savePosts();
+        });
+
+        postElement.appendChild(deleteButton);
+
+        postsContainer.appendChild(postElement);
+
+        // حفظ المنشورات في Local Storage
+        savePosts();
+    }
+
+    function savePosts() {
+        const allPosts = Array.from(document.querySelectorAll('.post')).map(postElement => {
+            const content = postElement.innerHTML;
+            const userName = content.match(/اسم الناشر: (.+)<br>/)[1];
+            const fileElement = postElement.querySelector('img, video');
+            const file = fileElement ? fileElement.src : null;
+
+            return { content, userName, file };
+        });
+
+        localStorage.setItem('posts', JSON.stringify(allPosts));
+    }
+});
