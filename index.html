@@ -4,12 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>This Web It shows what the enemy is doing in Palestine</title>
+    <title>Your Legendary Website</title>
 </head>
 <body>
     <div class="container">
         <div class="main-content" id="postsContainer">
             <!-- المنشورات ستظهر هنا -->
+        </div>
+        <div class="actions-container">
+            <button id="shareButton" class="round-button" onclick="toggleShareOptions()">شارك</button>
+            <div id="shareOptions">
+                <div class="round-button" onclick="shareText()">نص</div>
+                <div class="round-button" onclick="shareMedia()">صورة/فيديو</div>
+            </div>
         </div>
     </div>
 
