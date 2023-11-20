@@ -1,34 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>PalestineWeb</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Your Website</title>
 </head>
 <body>
-  <div id="main-container">
-    <div id="publish-container">
-      <button id="publish-btn">نشر</button>
-      <div id="publish-options">
-        <button id="text-option">نص</button>
-        <button id="media-option">فيديو/صورة</button>
-      </div>
-      <div id="text-input">
-        <textarea id="text-content" placeholder="اكتب نصك هنا"></textarea>
-        <button id="text-publish-btn">نشر</button>
-      </div>
-      <div id="media-input">
-        <input type="file" id="media-file" accept="image/*, video/*">
-        <textarea id="media-caption" placeholder="اكتب نصاً للفيديو/الصورة"></textarea>
-        <button id="media-publish-btn">نشر</button>
-      </div>
+    <div class="container">
+        <!-- هنا يمكنك وضع واجهة المستخدم -->
+        <input type="text" id="username" placeholder="Enter your name">
+        <button onclick="publishText()">Publish Text</button>
+        <button onclick="publishMedia()">Publish Media</button>
+        <div id="posts-container">
+            <!-- هنا ستظهر المنشورات -->
+        </div>
     </div>
-    <div id="posts-container">
-      <!-- المنشورات ستظهر هنا -->
-    </div>
-  </div>
+    <button id="publish-btn" class="circle-btn" onclick="togglePublishOptions()">Publish</button>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
