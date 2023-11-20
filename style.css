@@ -21,6 +21,13 @@ body {
     text-align: center;
 }
 
+.sidebar #userName {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
 .sidebar button {
     background-color: #2ecc71;
     color: #fff;
@@ -46,6 +53,7 @@ body {
 }
 
 .post {
+    position: relative;
     width: 30%;
     margin-bottom: 20px;
     border: 1px solid #ddd;
@@ -60,11 +68,34 @@ body {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
-.post img {
+.post img, .post video {
     max-width: 100%;
     height: auto;
     border-radius: 6px;
     margin-top: 10px;
+    transition: transform 0.3s ease;
 }
 
-/* أضف أي تنسيق إضافي حسب احتياجاتك */
+.post img.enlarged, .post video.enlarged {
+    transform: scale(1.2);
+}
+
+.post .delete-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 12px;
+    display: none;
+}
+
+.post:hover .delete-button {
+    display: block;
+}
+
+/* ... */
