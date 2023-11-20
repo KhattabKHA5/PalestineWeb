@@ -48,13 +48,13 @@ body {
     width: 80%;
     padding: 20px;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    flex-direction: column-reverse; /* عرض المنشورات بشكل عمودي وعكسي */
+    align-items: center; /* محاذاة المنشورات في وسط الصفحة */
 }
 
 .post {
     position: relative;
-    width: 30%;
+    width: 80%; /* تحديد عرض المنشور */
     margin-bottom: 20px;
     border: 1px solid #ddd;
     padding: 15px;
@@ -97,5 +97,3 @@ body {
 .post:hover .delete-button {
     display: block;
 }
-
-/* ... */
