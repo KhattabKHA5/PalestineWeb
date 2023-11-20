@@ -1,57 +1,56 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const publishBtn = document.getElementById('publish-btn');
-  const publishOptions = document.getElementById('publish-options');
-  const textInput = document.getElementById('text-input');
-  const mediaInput = document.getElementById('media-input');
-  const textPublishBtn = document.getElementById('text-publish-btn');
-  const mediaPublishBtn = document.getElementById('media-publish-btn');
-  const postsContainer = document.getElementById('posts-container');
+// Sample data structure for posts
+let posts = [];
 
-  publishBtn.addEventListener('click', function () {
-    publishOptions.style.display = 'block';
-  });
+// Function to publish a post
+function publishPost() {
+    const username = document.getElementById('username').value;
+    const postText = document.getElementById('post-text').value;
+    const fileInput = document.getElementById('file-input');
+    const selectedFile = fileInput.files[0];
 
-  textPublishBtn.addEventListener('click', function () {
-    const textContent = document.getElementById('text-content').value;
-    createTextPost(textContent);
-  });
+    if (username && (postText || selectedFile)) {
+        const newPost = {
+            username: username,
+            text: postText,
+            file: selectedFile,
+        };
 
-  mediaPublishBtn.addEventListener('click', function () {
-    const mediaFile = document.getElementById('media-file').files[0];
-    const mediaCaption = document.getElementById('media-caption').value;
-    createMediaPost(mediaFile, mediaCaption);
-  });
+        posts.push(newPost);
+        displayPosts();
+        clearInputFields();
+    }
+}
 
-  function createTextPost(content) {
-    const post = document.createElement('div');
-    post.className = 'post';
-    post.innerHTML = `<p>${content}</p><span class="delete-btn" onclick="deletePost(this)">حذف</span>`;
-    postsContainer.appendChild(post);
-    resetInputs();
-  }
+// Function to display posts
+function displayPosts() {
+    const postsSection = document.getElementById('postsSection');
+    postsSection.innerHTML = '';
 
-  function createMediaPost(file, caption) {
-    const post = document.createElement('div');
-    post.className = 'post';
-    const mediaElement = file.type.includes('image')
-      ? `<img src="${URL.createObjectURL(file)}" alt="صورة" class="media-item">`
-      : `<video src="${URL.createObjectURL(file)}" controls class="media-item"></video>`;
-    post.innerHTML = `${mediaElement}<p>${caption}</p><span class="delete-btn" onclick="deletePost(this)">حذف</span>`;
-    postsContainer.appendChild(post);
-    resetInputs();
-  }
+    posts.forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.classList.add('post');
 
-  function resetInputs() {
-    document.getElementById('text-content').value = '';
-    document.getElementById('media-file').value = '';
-    document.getElementById('media-caption').value = '';
-    publishOptions.style.display = 'none';
-    textInput.style.display = 'none';
-    mediaInput.style.display = 'none';
-  }
+        const postContent = document.createElement('p');
+        postContent.innerHTML = `<strong>${post.username}:</strong> ${post.text}`;
+        postElement.appendChild(postContent);
 
-  window.deletePost = function (deleteBtn) {
-    const post = deleteBtn.parentNode;
-    postsContainer.removeChild(post);
-  };
-});
+        if (post.file) {
+            const fileType = post.file.type.startsWith('image') ? 'image' : 'video';
+            const fileElement = document.createElement(fileType);
+            fileElement.setAttribute('controls', true);
+            fileElement.innerHTML = `<source src="${URL.createObjectURL(post.file)}" type="${post.file.type}"></source>`;
+            postElement.appendChild(fileElement);
+        }
+
+        postsSection.appendChild(postElement);
+    });
+}
+
+// Function to clear input fields after publishing
+function clearInputFields() {
+    document.getElementById('username').value = '';
+    document.getElementById('post-text').value = '';
+    document.getElementById('file-input').value = '';
+}
+
+// You can add more functionalities and improve the code as needed
