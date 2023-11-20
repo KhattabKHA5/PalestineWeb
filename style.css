@@ -8,12 +8,13 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
 }
 
 .main-content {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
 }
 
 .post {
@@ -37,16 +38,50 @@ body {
     padding: 15px;
 }
 
-.post .delete-button {
+.post .delete-button, .post .comment-button {
     background-color: #e74c3c;
     color: #fff;
     padding: 5px;
     border: none;
     cursor: pointer;
     border-radius: 0 0 8px 8px;
+    margin: 5px;
     display: none;
 }
 
-.post:hover .delete-button {
+.post:hover .delete-button, .post:hover .comment-button {
     display: block;
+}
+
+.actions-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.round-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+#shareOptions {
+    display: none;
+    position: absolute;
+    bottom: 60px;
+    right: 20px;
+    flex-direction: column;
+}
+
+#shareOptions .round-button {
+    margin-bottom: 10px;
+    cursor: pointer;
 }
